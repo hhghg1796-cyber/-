@@ -1,17 +1,24 @@
 workflows:
   android-workflow:
     name: Android Build
-    max_build_duration: 60
+    max_build_duration: 90
     instance_type: mac_mini_m1
     environment:
-      java: 17
+      java: 21
+      android_signing: []
     scripts:
+      - name: Prepare Android SDK
+        script: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > $CM_BUILD_DIR/maktaba/local.properties
+          yes | sdkmanager --licenses > /dev/null 2>&1 || true
+          sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0" > /dev/null 2>&1 || true
       - name: Generate wrapper and build APK
         script: |
           cd $CM_BUILD_DIR/maktaba
-          gradle wrapper --gradle-version 8.7
+          gradle wrapper --gradle-version 9.3.1
           chmod +x gradlew
-          ./gradlew assembleDebug
+          ./gradlew assembleDebug --stacktrace
     artifacts:
       - "**/*.apk"
+      - "**/build/outputs/**/*.apk"
       
