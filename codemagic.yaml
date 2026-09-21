@@ -3,14 +3,7 @@ workflows:
     name: Android Build
     max_build_duration: 60
     instance_type: mac_mini_m1
-    working_directory: maktaba
     environment:
-      android_signing:
-        - keystore_reference
-      groups:
-        - google_credentials
-      vars:
-        PACKAGE_NAME: "com.example.app"
       java: 17
     scripts:
       - name: Build APK
