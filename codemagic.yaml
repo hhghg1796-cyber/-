@@ -6,10 +6,12 @@ workflows:
     environment:
       java: 17
     scripts:
-      - name: Build APK
+      - name: Generate wrapper and build APK
         script: |
           cd $CM_BUILD_DIR/maktaba
-          chmod +x gradlew || true
+          gradle wrapper --gradle-version 8.7
+          chmod +x gradlew
           ./gradlew assembleDebug
     artifacts:
       - "**/*.apk"
+      
